@@ -7,17 +7,16 @@
 #include <algorithm>
 #include <utility>
 
-std::string getOxygenBinary(std::vector<std::string> inputs){
+std::string getBinary(std::vector<std::string> inputs, bool factorIsGreater){
 	
-	int arr[2] = {0,0};
-	
-	std::string oxBinary = "";
 	char prevBit = '0';
-	bool runFunc = true;
-	
-	while(runFunc){
+	int strCtr = 0;
+	while(inputs.size() != 1){
+		
+		int arr[2] = {0,0};
+		
 		for(int i = 0; i < inputs.size(); i++){
-			if(inputs[i][oxBinary.size()] == '0'){
+			if(inputs[i][strCtr] == '0'){
 				arr[0]++;
 			}else{
 				arr[1]++;
@@ -26,79 +25,30 @@ std::string getOxygenBinary(std::vector<std::string> inputs){
 
 		
 		if(arr[0]>arr[1]){
-			prevBit='0';
-			oxBinary+="0";
-		}else{
-			prevBit='1';
-			oxBinary+="1";
-			
-			if(arr[0] == arr[1]){
-				runFunc = false;
-			}
-		}
-		
-		for(int i = 0; i < inputs.size(); i++){
-			if(inputs[i][oxBinary.size()-1] != prevBit){
-				inputs.erase(inputs.begin() + i);
-				i--;
-			}
-		}
-		
-		arr[0] = 0;
-		arr[1] = 0;
-	}
-	
-	
-	
-	return oxBinary;
-}
-
-std::string getCO2Binary(std::vector<std::string> inputs){
-	
-	
-	int arr[2] = {0,0};
-	
-	std::string co2Binary = "";
-	char prevBit = '0';
-	bool runFunc = true;
-	
-	while(runFunc){
-		for(int i = 0; i < inputs.size(); i++){
-			if(inputs[i][co2Binary.size()] == '0'){
-				arr[0]++;
+			if(factorIsGreater){
+				prevBit='0';
 			}else{
-				arr[1]++;
+				prevBit='1';
 			}
-		}
-		
-		if(arr[0] == 0 || arr[1] == 0){
-			for(int l = co2Binary.size(); l < 12; l++){
-				co2Binary += inputs[0][l];
-			}
-			break;
-		}
-		
-		if(arr[0]>arr[1]){
-			prevBit='1';
-			co2Binary+="1";
+			strCtr++;
 		}else{
-			prevBit='0';
-			co2Binary+="0";
+			if(factorIsGreater){
+				prevBit='1';
+			}else{
+				prevBit='0';
+			}
+			strCtr++;
 		}
 		
 		for(int i = 0; i < inputs.size(); i++){
-			if(inputs[i][co2Binary.size()-1] != prevBit){
+			if(inputs[i][strCtr-1] != prevBit){
 				inputs.erase(inputs.begin() + i);
 				i--;
 			}
 		}
-		
-		arr[0] = 0;
-		arr[1] = 0;
 	}
 	
-	
-	return co2Binary;
+	return inputs[0];
 }
 
 
@@ -114,8 +64,8 @@ int main(){
 	}
 	
 	
-	std::string oxygenRate = getOxygenBinary(inputs);
-	std::string co2Rate = getCO2Binary(inputs);
+	std::string oxygenRate = getBinary(inputs, true);
+	std::string co2Rate = getBinary(inputs, false);
 	
 	
 	int oxygen = std::stoi(oxygenRate,0,2);
