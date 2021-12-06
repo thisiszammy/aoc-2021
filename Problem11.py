@@ -1,4 +1,4 @@
-
+# Solution Too Slow For Problem 12
 
 fishes = [int(x) for x in input().split(',')]
 
@@ -17,5 +17,6 @@ while ctr != 0:
 
     fishes+=newFish
     ctr-=1
+
 
 print(len(fishes))
