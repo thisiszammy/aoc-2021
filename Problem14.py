@@ -1,7 +1,8 @@
 def getFuelRequirement(crabs, pos):
     fuel = 0
     for i in crabs:
-        fuel += abs(pos-i)
+        subCap = abs(pos-i)
+        fuel += int(int(subCap*(subCap+1))/2)
     
     return fuel
 
@@ -9,8 +10,10 @@ def getFuelRequirement(crabs, pos):
 crabs = [int(x) for x in input().split(",")]
 
 fuel = -1
+farthestPoint = max(crabs)
+nearestPoint = min(crabs)
 
-for i in crabs:
+for i in range(nearestPoint, farthestPoint+1):
     estFuel = getFuelRequirement(crabs, i)
     if estFuel < fuel or fuel == -1:
         fuel = estFuel
